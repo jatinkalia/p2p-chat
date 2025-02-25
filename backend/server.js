@@ -1,4 +1,4 @@
-// server.js
+
 const express = require("express");
 const http = require("http");
 const { Server } = require("socket.io");
@@ -9,18 +9,17 @@ app.use(cors());
 const server = http.createServer(app);
 const io = new Server(server, {
   cors: {
-    origin: "*", // Allow all origins (update in production)
+    origin: "*", 
   },
 });
 
-// In-memory storage for users and messages
-const users = {}; // { email: { mobile, socketId, online } }
-const messages = {}; // { recipientEmail: [{ senderEmail, message, timestamp }] }
 
-// User registration
+const users = {}; 
+const messages = {}; 
+
+
 app.use(express.json());
-// server.js (Backend)
-// server.js (Backend)
+
 app.post("/register", (req, res) => {
     const { name, email, phone } = req.body;
     if (!name || !email || !phone) {
@@ -41,18 +40,18 @@ app.post("/register", (req, res) => {
     res.status(200).json({ users: userList });
   });
   
-// Socket.IO connection
+
 io.on("connection", (socket) => {
   console.log("A user connected:", socket.id);
 
-  // Authenticate user and set online status
+  
   socket.on("authenticate", (email) => {
     if (users[email]) {
       users[email].socketId = socket.id;
       users[email].online = true;
       socket.emit("authentication", { success: true });
 
-      // Deliver pending messages
+      
       if (messages[email]) {
         messages[email].forEach((msg) => {
           socket.emit("message", msg);
@@ -64,7 +63,7 @@ io.on("connection", (socket) => {
     }
   });
 
-  // Send message
+ 
   socket.on("sendMessage", ({ recipientEmail, senderEmail, message }) => {
     const recipient = users[recipientEmail];
     if (recipient && recipient.online) {
@@ -75,7 +74,7 @@ io.on("connection", (socket) => {
     }
   });
 
-  // Handle disconnection
+  
   socket.on("disconnect", () => {
     const user = Object.keys(users).find((email) => users[email].socketId === socket.id);
     if (user) {
@@ -86,7 +85,7 @@ io.on("connection", (socket) => {
   });
 });
 
-// Start server
+
 const PORT = 5000;
 server.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);

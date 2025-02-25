@@ -1,4 +1,3 @@
-// App.js (Frontend)
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import io from "socket.io-client";
@@ -36,10 +35,10 @@ function App() {
   const [users, setUsers] = useState([]);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
-  const [profileOpen, setProfileOpen] = useState(false); // For profile sidebar
-  const [selectedUser, setSelectedUser] = useState(null); // Selected user details
+  const [profileOpen, setProfileOpen] = useState(false); 
+  const [selectedUser, setSelectedUser] = useState(null); 
 
-  // Fetch registered users from the backend
+  
   useEffect(() => {
     axios
       .get("http://localhost:5000/users")
@@ -51,7 +50,7 @@ function App() {
       });
   }, []);
 
-  // Sign up user
+  
   const signUp = async () => {
     if (!name || !email || !phone) {
       setError("Name, email, and phone are required");
@@ -69,7 +68,7 @@ function App() {
     }
   };
 
-  // Send message
+  
   const sendMessage = () => {
     if (!recipientEmail || !message) {
       setError("Recipient email and message are required");
@@ -83,7 +82,7 @@ function App() {
     setMessage("");
   };
 
-  // Receive messages
+  
   useEffect(() => {
     const handleMessage = (msg) => {
       setChat((prevChat) => [...prevChat, msg]);
@@ -91,25 +90,25 @@ function App() {
 
     socket.on("message", handleMessage);
 
-    // Cleanup the event listener
+    
     return () => {
       socket.off("message", handleMessage);
     };
   }, []);
 
-  // Close snackbar
+  
   const handleClose = () => {
     setError("");
     setSuccess("");
   };
 
-  // Open profile sidebar
+  
   const openProfile = (user) => {
     setSelectedUser(user);
     setProfileOpen(true);
   };
 
-  // Close profile sidebar
+  
   const closeProfile = () => {
     setProfileOpen(false);
   };
@@ -126,7 +125,7 @@ function App() {
             textAlign: "center",
           }}
         >
-          {/* Logo and Chat Text */}
+          {}
           <Box display="flex" alignItems="center" justifyContent="center" mb={2}>
             <img
               src="https://via.placeholder.com/50"
@@ -138,7 +137,7 @@ function App() {
             </Typography>
           </Box>
 
-          {/* Sign Up Form */}
+          {}
           <Typography variant="h5" gutterBottom>
             Sign Up
           </Typography>
@@ -169,7 +168,7 @@ function App() {
         </Paper>
       ) : (
         <Grid container style={{ height: "100vh" }}>
-          {/* Sidebar */}
+          {}
           <Grid
             item
             xs={4}
@@ -206,9 +205,9 @@ function App() {
             </List>
           </Grid>
 
-          {/* Chat Window */}
+          {}
           <Grid item xs={8} style={{ display: "flex", flexDirection: "column" }}>
-            {/* Chat Header */}
+            {}
             <Box
               display="flex"
               alignItems="center"
@@ -231,7 +230,7 @@ function App() {
               )}
             </Box>
 
-            {/* Chat Messages */}
+            {}
             <div
               style={{
                 flex: 1,
@@ -270,7 +269,7 @@ function App() {
               ))}
             </div>
 
-            {/* Message Input */}
+            {}
             <div style={{ padding: "16px", borderTop: "1px solid #ddd" }}>
               <TextField
                 fullWidth
@@ -290,7 +289,7 @@ function App() {
             </div>
           </Grid>
 
-          {/* Profile Sidebar */}
+          {}
           <Drawer anchor="right" open={profileOpen} onClose={closeProfile}>
             <Box style={{ width: "300px", padding: "16px" }}>
               {selectedUser && (
@@ -317,7 +316,7 @@ function App() {
         </Grid>
       )}
 
-      {/* Snackbars for error and success messages */}
+      {}
       <Snackbar open={!!error} autoHideDuration={6000} onClose={handleClose}>
         <Alert onClose={handleClose} severity="error">
           {error}
